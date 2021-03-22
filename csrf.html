@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title>CSRF example</title>
+	</head>
+	<body>
+		
+	<form action='http://0.0.0.0/newarticle.php' method='POST'>
+	<div class="form-group">
+	<label for="inputTitle" class="sr-only">Post Title</label>
+	<input type="text" id="inputTitle" placeholder="Title" required autofocus class="form-control" name='title'>
+	</div>
+	<div class="form-group">
+	<label for="inputContent" class="sr-only">Post Content</label>
+	<textarea name='content' class="form-control" id="inputContent" placeholder="Content" rows='10'></textarea>
+	</div>
+	<input type="submit" value="Publish" name="submit" class="btn btn-primary">
+</form>
+	</body>
+</html>
