@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_SESSION['token'] = bin2hex(random_bytes(24));
       //Redirect to admin area
       header("Location: /admin.php");
+      die();
     }
     error_log("Password incorrect for user ".$username);
 

@@ -4,6 +4,7 @@
 if($_SERVER['REQUEST_METHOD'] == 'POST' and $_SESSION['token'] == $_POST['token']) {
 		$author = $_SESSION['id'];	
 		add_article($dbconn, $_POST['title'], $_POST['content'], $author);
+		error_log("Creating new article {$_POST['title']} by user {$_SESSION['id']}: ");
 		Header ("Location: /");		
 	}
 ?>

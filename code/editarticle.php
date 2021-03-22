@@ -17,10 +17,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 		die();
 	}
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' and $_SESSION['token'] == $_POST['token']) {
+
 	$title = $_POST['title'];
 	$content = $_POST['content'];
 	$aid = urldecode($_POST['aid']);
 	$result=update_article($dbconn, $title, $content, $aid);
+	error_log("Editing article $aid by user {$_SESSION['id']}: ");
 	Header ("Location: /");
 }
 ?>
