@@ -65,8 +65,10 @@ function delete_article($dbconn, $aid) {
 }
 
 function add_article($dbconn, $title, $content, $author) {
-	$stub = substr($content, 0, 30);
-	$aid = str_replace(" ", "-", strtolower($title));
+	$stub = htmlspecialchars(substr($content, 0, 30));
+	$title = htmlspecialchars($title);
+	$content = htmlspecialchars($content);
+	$aid = htmlspecialchars(str_replace(" ", "-", strtolower($title)));
 	$query="
 		INSERT INTO
 		articles
