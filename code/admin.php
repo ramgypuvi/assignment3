@@ -29,7 +29,7 @@ New Post <span class="fa fa-plus" aria-hidden="true"></span>
   <td><?php echo $row['author'] ?></td>
   <td><?php echo substr($row['date'],0,10) ?></td>
   <td><a href="/editarticle.php?aid=<?php echo urlencode($row['aid']) ?>"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a></td>
-  <td><a href="/deletearticle.php?aid=<?php echo urlencode($row['aid']) ?>"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a></td>
+  <td><a href="/deletearticle.php?aid=<?php echo urlencode($row['aid']) ?>&token=<?php echo $_SESSION['token'] ?>"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a></td>
 </tr>
 	<?php } //close while loop ?>
 </table>

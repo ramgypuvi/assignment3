@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_SESSION['id'] = $row['id'];
       // get user role as well
       $_SESSION['role'] = $row['role'];
+      $_SESSION['token'] = bin2hex(random_bytes(24));
       //Redirect to admin area
       header("Location: /admin.php");
     }

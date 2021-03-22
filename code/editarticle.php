@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 		header("Location: /admin.php");
 		die();
 	}
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST' and $_SESSION['token'] == $_POST['token']) {
 	$title = $_POST['title'];
 	$content = $_POST['content'];
 	$aid = urldecode($_POST['aid']);
@@ -39,6 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 <form action='#' method='POST'>
 	<input type="hidden" value="<?php echo urlencode($aid) ?>" name="aid">
+	<input type="hidden" value="<?php echo $_SESSION['token'] ?>" name="token">
 	<div class="form-group">
 	<label for="inputTitle" class="sr-only">Post Title</label>
 	<input type="text" id="inputTitle" required autofocus name='title' value="<?php echo $row['title'] ?>">

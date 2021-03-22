@@ -1,7 +1,7 @@
 <?php include("templates/page_header.php");?>
 <?php include("lib/auth.php") ?>
 <?php
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if($_SERVER['REQUEST_METHOD'] == 'POST' and $_SESSION['token'] == $_POST['token']) {
 		$author = $_SESSION['id'];	
 		add_article($dbconn, $_POST['title'], $_POST['content'], $author);
 		Header ("Location: /");		
@@ -21,6 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <h2>New Article</h2>
 
 <form action='#' method='POST'>
+	<input type="hidden" value="<?php echo $_SESSION['token'] ?>" name="token">
 	<div class="form-group">
 	<label for="inputTitle" class="sr-only">Post Title</label>
 	<input type="text" id="inputTitle" placeholder="Title" required autofocus class="form-control" name='title'>

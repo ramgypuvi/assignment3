@@ -67,8 +67,9 @@ function delete_article($dbconn, $aid) {
 	if (strcmp($_SESSION['role'], 'admin') !== 0) {
 
 		$query= "DELETE FROM articles WHERE aid=$1 AND author=$2";
+		return run_query($dbconn, $query, array($aid, $_SESSION['id']));
 	}
-	return run_query($dbconn, $query, array($aid, $_SESSION['id']));
+	return run_query($dbconn, $query, array($aid));
 }
 
 function add_article($dbconn, $title, $content, $author) {
@@ -103,9 +104,10 @@ function update_article($dbconn, $title, $content, $aid) {
 			content=$2
 			WHERE
 			aid=$3 AND author=$4";
+			return run_query($dbconn, $query, array($title, $content, $aid, $_SESSION['id']));
 	}
 
-	return run_query($dbconn, $query, array($title, $content, $aid, $_SESSION['id']));
+	return run_query($dbconn, $query, array($title, $content, $aid));
 }
 
 function authenticate_user($dbconn, $username, $password) {
