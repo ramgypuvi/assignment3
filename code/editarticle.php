@@ -3,13 +3,17 @@
 <?php
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
+
 	$aid = $_GET['aid'];	
+	
 	$result=get_article($dbconn, $aid);
+
 	$row = pg_fetch_array($result, 0);
+	
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$title = $_POST['title'];
 	$content = $_POST['content'];
-	$aid = $_POST['aid'];
+	$aid = urldecode($_POST['aid']);
 	$result=update_article($dbconn, $title, $content, $aid);
 	Header ("Location: /");
 }
@@ -28,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 <h2>New Post</h2>
 
 <form action='#' method='POST'>
-	<input type="hidden" value="<?php echo $row['aid'] ?>" name="aid">
+	<input type="hidden" value="<?php echo urlencode($aid) ?>" name="aid">
 	<div class="form-group">
 	<label for="inputTitle" class="sr-only">Post Title</label>
 	<input type="text" id="inputTitle" required autofocus name='title' value="<?php echo $row['title'] ?>">

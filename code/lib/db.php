@@ -11,11 +11,12 @@ if ($debug) {
 	}    
 }
 
-function run_query($dbconn, $query) {
+function run_query($dbconn, $query, $param) {
 	if ($debug) {
 		echo "$query<br>";
 	}
-	$result = pg_query($dbconn, $query);
+	$result = pg_query_params($dbconn, $query, $param);
+	
 	if ($result == False and $debug) {
 		echo "Query failed<br>";
 	}
@@ -37,7 +38,7 @@ function get_article_list($dbconn){
 		authors ON articles.author=authors.id
 		ORDER BY
 		date DESC";
-return run_query($dbconn, $query);
+return run_query($dbconn, $query, array());
 }
 
 function get_article($dbconn, $aid) {
@@ -54,14 +55,14 @@ function get_article($dbconn, $aid) {
 		INNER JOIN
 		authors ON articles.author=authors.id
 		WHERE
-		aid='".$aid."'
+		aid=$1
 		LIMIT 1";
-return run_query($dbconn, $query);
+return run_query($dbconn, $query, array($aid));
 }
 
 function delete_article($dbconn, $aid) {
-	$query= "DELETE FROM articles WHERE aid='".$aid."'";
-	return run_query($dbconn, $query);
+	$query= "DELETE FROM articles WHERE aid='$1'";
+	return run_query($dbconn, $query, array($aid));
 }
 
 function add_article($dbconn, $title, $content, $author) {
@@ -74,19 +75,21 @@ function add_article($dbconn, $title, $content, $author) {
 		articles
 		(aid, title, author, stub, content) 
 		VALUES
-		('$aid', '$title', $author, '$stub', '$content')";
-	return run_query($dbconn, $query);
+		($1, $2, $3, $4, $4)";
+	return run_query($dbconn, $query, array($aid, $title, $author, $stub, $content));
 }
 
 function update_article($dbconn, $title, $content, $aid) {
+
 	$query=
 		"UPDATE articles
 		SET 
-		title='$title',
-		content='$content'
+		title=$1,
+		content=$2
 		WHERE
-		aid='$aid'";
-	return run_query($dbconn, $query);
+		aid=$3";
+	
+	return run_query($dbconn, $query, array($title, $content, $aid)	);
 }
 
 function authenticate_user($dbconn, $username, $password) {
@@ -99,10 +102,10 @@ function authenticate_user($dbconn, $username, $password) {
 		FROM
 		authors
 		WHERE
-		username='".$_POST['username']."'
+		username=$1
 		AND
-		password='".$_POST['password']."'
+		password=$2
 		LIMIT 1";
-	return run_query($dbconn, $query);
+	return run_query($dbconn, $query, array($_POST['username'], $_POST['password']));
 }	
 ?>
