@@ -61,7 +61,7 @@ return run_query($dbconn, $query, array($aid));
 }
 
 function delete_article($dbconn, $aid) {
-	$query= "DELETE FROM articles WHERE aid='$1'";
+	$query= "DELETE FROM articles WHERE aid=$1";
 	return run_query($dbconn, $query, array($aid));
 }
 
@@ -88,7 +88,7 @@ function update_article($dbconn, $title, $content, $aid) {
 		content=$2
 		WHERE
 		aid=$3";
-	
+
 	return run_query($dbconn, $query, array($title, $content, $aid)	);
 }
 

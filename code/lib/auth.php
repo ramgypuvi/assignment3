@@ -1,7 +1,9 @@
 <?php
+error_log("message");
 if (!$_SESSION['authenticated']) {
-	Header ("Location: /login.php");
+	error_log("Redirect!");
+	// exit;
+	header ("Location: /login.php");
+	die();
 }
-
-
 ?>
