@@ -109,6 +109,7 @@ function update_article($dbconn, $title, $content, $aid) {
 }
 
 function authenticate_user($dbconn, $username, $password) {
+	
 	$query=
 		"SELECT
 		authors.id as id,
@@ -119,9 +120,11 @@ function authenticate_user($dbconn, $username, $password) {
 		authors
 		WHERE
 		username=$1
-		AND
-		password=$2
 		LIMIT 1";
-	return run_query($dbconn, $query, array($_POST['username'], $_POST['password']));
+	
+	$result = run_query($dbconn, $query, array($_POST['username']));
+	
+	
+	return $result;
 }	
 ?>

@@ -4,14 +4,26 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$result = authenticate_user($dbconn, $_POST['username'], $_POST['password']);
 	if (pg_num_rows($result) == 1) {
-		$_SESSION['username'] = $_POST['username'];
-		$_SESSION['authenticated'] = True;
+
     $row = pg_fetch_array($result);
-		$_SESSION['id'] = $row['id'];
-    // get user role as well
-    $_SESSION['role'] = $row['role'];
-		//Redirect to admin area
-		header("Location: /admin.php");
+
+    
+
+    $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+
+    if (password_verify($_POST['password'], $row['password'])) {
+      error_log("Password correct for user ".$username);
+      $_SESSION['username'] = $_POST['username'];
+      $_SESSION['authenticated'] = True;
+      $_SESSION['id'] = $row['id'];
+      // get user role as well
+      $_SESSION['role'] = $row['role'];
+      //Redirect to admin area
+      header("Location: /admin.php");
+    }
+    error_log("Password incorrect for user ".$username);
+
 	}	
 }
 
