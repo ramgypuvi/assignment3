@@ -6,9 +6,11 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
+      - "443:443" 
     volumes:
       - ./code:/code
       - ./site.conf:/etc/nginx/conf.d/site.conf
+      - ./certs:/etc/nginx/certs
     links:
       - php
 
@@ -32,6 +34,8 @@ services:
       - ./data.sql:/data.sql
     environment:
       POSTGRES_PASSWORD: assignment1dbadmin
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
+
 
   adminer:
     image: adminer
