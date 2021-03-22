@@ -61,8 +61,14 @@ return run_query($dbconn, $query, array($aid));
 }
 
 function delete_article($dbconn, $aid) {
-	$query= "DELETE FROM articles WHERE aid=$1";
-	return run_query($dbconn, $query, array($aid));
+	$query= "DELETE FROM articles WHERE aid=$1";		
+	
+	// only the author himself can update its articles if its role is not admin
+	if (strcmp($_SESSION['role'], 'admin') !== 0) {
+
+		$query= "DELETE FROM articles WHERE aid=$1 AND author=$2";
+	}
+	return run_query($dbconn, $query, array($aid, $_SESSION['id']));
 }
 
 function add_article($dbconn, $title, $content, $author) {
@@ -75,12 +81,11 @@ function add_article($dbconn, $title, $content, $author) {
 		articles
 		(aid, title, author, stub, content) 
 		VALUES
-		($1, $2, $3, $4, $4)";
+		($1, $2, $3, $4, $5)";
 	return run_query($dbconn, $query, array($aid, $title, $author, $stub, $content));
 }
 
 function update_article($dbconn, $title, $content, $aid) {
-
 	$query=
 		"UPDATE articles
 		SET 
@@ -89,7 +94,18 @@ function update_article($dbconn, $title, $content, $aid) {
 		WHERE
 		aid=$3";
 
-	return run_query($dbconn, $query, array($title, $content, $aid)	);
+	// only the author himself can update its articles if its role is not admin
+	if (strcmp($_SESSION['role'], 'admin') !== 0) {
+		$query=
+			"UPDATE articles
+			SET 
+			title=$1,
+			content=$2
+			WHERE
+			aid=$3 AND author=$4";
+	}
+
+	return run_query($dbconn, $query, array($title, $content, $aid, $_SESSION['id']));
 }
 
 function authenticate_user($dbconn, $username, $password) {

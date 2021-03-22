@@ -10,6 +10,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 	$row = pg_fetch_array($result, 0);
 	
+	if ($_SESSION['role'] !== 'admin' && $_SESSION['username'] !==  $row['author']) {
+		error_log("Wrong role! You must be admin. ");
+		error_log("Redirect: Location: /admin.php");
+		header("Location: /admin.php");
+		die();
+	}
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$title = $_POST['title'];
 	$content = $_POST['content'];
